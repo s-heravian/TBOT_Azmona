@@ -224,7 +224,7 @@ $row[name] $row[family] عزیز ؛
                         $sql="UPDATE `db_user` SET `name`='' WHERE `chat_id`='$req_chat_id'";
                         $result    = mysqli_query($con, $sql);
                         $option = keybordOption($con, $telegram, $chat_id);
-                            $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                            $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                             
                             $content = array(
                                 'chat_id' => $chat_id,
@@ -238,7 +238,7 @@ $row[name] $row[family] عزیز ؛
                         $sql="UPDATE `db_user` SET `family`='' WHERE `chat_id`='$req_chat_id'";
                         $result    = mysqli_query($con, $sql);
                         $option = keybordOption($con, $telegram, $chat_id);
-                            $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                            $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                             
                             $content = array(
                                 'chat_id' => $chat_id,
@@ -627,7 +627,7 @@ $row[name] $row[family] عزیز ؛
                         $sql     = "DELETE FROM `qz_list` WHERE `id` = $qz_id";
                         $result  = mysqli_query($con, $sql);
                         $option  = keybordOption($con, $telegram, $chat_id);
-                        $keyb    = $telegram->buildKeyBoard($option, $onetime = true);
+                        $keyb    = $telegram->buildKeyBoard($option, $onetime = false);
                         $content = array(
                             'chat_id' => $chat_id,
                             'reply_markup' => $keyb,
@@ -783,12 +783,12 @@ $row[name] $row[family] عزیز ؛
                         
                         //Close and output PDF document
                         $file_name = 'output_' . mt_rand(1, 10000) . '.pdf';
+                        $pdf_path = realpath(__DIR__ . "/outtemp") . '/' . $file_name;
+                        $pdf->Output($pdf_path, 'F');
                         
-                        $pdf->Output(__DIR__ . "/outtemp/$file_name", 'F');
-                        $file_url = $boturl . "/outtemp/$file_name";
                         $content  = array(
                             'chat_id' => $chat_id,
-                            'document' => $file_url,
+                            'document' => new CURLFile($pdf_path),
                             'caption' => "نتیجه آزمون $qz_name"
                         );
                         $telegram->sendDocument($content);
@@ -2180,7 +2180,7 @@ if ($msgType == 'message') { {
                         $result = mysqli_query($con, $sql);
                         if ($role == 2) {
                             $option = keybordOption($con, $telegram, $chat_id);
-                            $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                            $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                             
                             $content = array(
                                 'chat_id' => $chat_id,
@@ -2192,7 +2192,7 @@ if ($msgType == 'message') { {
                             
                         } elseif ($role == 1) {
                             $option = keybordOption($con, $telegram, $chat_id);
-                            $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                            $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                             
                             $content = array(
                                 'chat_id' => $chat_id,
@@ -2222,7 +2222,7 @@ if ($msgType == 'message') { {
                     $row    = mysqli_fetch_array($result);
                     if ($row["role"] == 2) {
                         $option = keybordOption($con, $telegram, $chat_id);
-                        $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                        $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                         
                         $content = array(
                             'chat_id' => $chat_id,
@@ -2233,7 +2233,7 @@ if ($msgType == 'message') { {
                         
                     } elseif ($row["role"] == 1) {
                         $option = keybordOption($con, $telegram, $chat_id);
-                        $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                        $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                         
                         $content = array(
                             'chat_id' => $chat_id,
@@ -2279,7 +2279,7 @@ startteacher:
                 //First row
                 array($telegram->buildKeyboardButton("دانش آموز"), $telegram->buildKeyboardButton("معلم"))
                 );
-                $keyb = $telegram->buildKeyBoard($option, $onetime = true);
+                $keyb = $telegram->buildKeyBoard($option, $onetime = false);
                 $content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "عنوان خود را انتخاب نمایید");
                 $telegram->sendMessage($content);
                 */
@@ -2295,7 +2295,7 @@ startteacher:
                 $telegram->sendMessage($content);
                 $telegram->editMessageText($content);
                 $option = keybordOption($con, $telegram, $chat_id);
-                $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                 
                 $content = array(
                     'chat_id' => $chat_id,
@@ -2319,7 +2319,7 @@ startteacher:
                         $telegram->sendMessage($content);
                     } else {
                         $option = keybordOption($con, $telegram, $chat_id);
-                        $keyb   = $telegram->buildKeyBoard($option, true);
+                        $keyb   = $telegram->buildKeyBoard($option, false);
                         
                         $content = array(
                             'chat_id' => $chat_id,
@@ -2456,7 +2456,7 @@ startteacher:
                             $telegram->buildKeyboardButton("حذف امتحان")
                             )*
                             )*/ ;
-                            $keyb    = $telegram->buildKeyBoard($option, $onetime = true);
+                            $keyb    = $telegram->buildKeyBoard($option, $onetime = false);
                             $content = array(
                                 'chat_id' => $chat_id,
                                 'reply_markup' => $keyb,
@@ -2509,7 +2509,7 @@ normal:
                                     $sql     = "UPDATE `db_user` SET `chat_id`=$chat_id,`name`='',`family`='',`role`=2 WHERE `chat_id`=$chat_id";
                                     $result  = mysqli_query($con, $sql);
                                     $option  = keybordOption($con, $telegram, $chat_id);
-                                    $keyb    = $telegram->buildKeyBoard($option, $onetime = true);
+                                    $keyb    = $telegram->buildKeyBoard($option, $onetime = false);
                                     $content = array(
                                         'chat_id' => $chat_id,
                                         'reply_markup' => $keyb,
@@ -2538,7 +2538,7 @@ normal:
                                     );
                                     $telegram->sendMessage($content);
                                     $option = keybordOption($con, $telegram, $chat_id);
-                                    $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+                                    $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
                                     
                                     break;
                                 default:
@@ -2956,7 +2956,7 @@ function qzOption($telegram, $con, $chat_id, $qz_id, $leson_id)
     $sql    = "UPDATE `db_user` SET `pleson`='$pleson' WHERE `chat_id`=$chat_id";
     $result = mysqli_query($con, $sql);
     $option = keybordOption($con, $telegram, $chat_id);
-    $keyb   = $telegram->buildKeyBoard($option, $onetime = true);
+    $keyb   = $telegram->buildKeyBoard($option, $onetime = false);
     
     $sqlm    = "SELECT * FROM `panel_admin` WHERE `chat_id`=$chat_id";
     $resultm = mysqli_query($con, $sqlm);
@@ -3225,7 +3225,7 @@ function userEnterCheck($telegram, $con, $chat_id, $leson_id, $role, $username)
     }
     if ($row["name"] == NULL) {
         $option  = keybordOption($con, $telegram, $chat_id);
-        $keyb    = $telegram->buildKeyBoard($option, $onetime = true);
+        $keyb    = $telegram->buildKeyBoard($option, $onetime = false);
         $content = array(
             'chat_id' => $chat_id,
             'reply_markup' => $keyb,
@@ -3258,7 +3258,7 @@ function userEnterCheck($telegram, $con, $chat_id, $leson_id, $role, $username)
         $name       = $row["name"];
         $teacher_id = $row["parent"];
         $option     = keybordOption($con, $telegram, $chat_id);
-        $keyb       = $telegram->buildKeyBoard($option, $onetime = true);
+        $keyb       = $telegram->buildKeyBoard($option, $onetime = false);
         $content    = array(
             'chat_id' => $chat_id,
             'reply_markup' => $keyb,
@@ -3356,7 +3356,7 @@ function creatQuestion($telegram, $leson_id, int $chat_id, $qz_id, $text, $con)
         $sql     = "INSERT INTO `qu_stat` (`chat_id`, `leson_id`, `qu_id`, `num_qu`, `max_st`, `pr_st`, `qz_id`) VALUES ($chat_id, $leson_id, NULL, NULL, NULL, 0, $qz_id)";
         $result  = mysqli_query($con, $sql);
         $option  = keybordOption($con, $telegram, $chat_id);
-        $keyb    = $telegram->buildKeyBoard($option, $onetime = true);
+        $keyb    = $telegram->buildKeyBoard($option, $onetime = false);
         $content = array(
             'chat_id' => $chat_id,
             'reply_markup' => $keyb,
