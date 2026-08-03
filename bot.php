@@ -144,4 +144,5 @@ if ($msgType == 'callback_query') {
 }
 
 } 
+}
 mysqli_close($con);
