@@ -144,6 +144,16 @@ if ($msgType == 'callback_query') {
         $callback_mid    = $callback_query["message"]["message_id"];
         $callback_markup = $callback_query["message"]["reply_markup"];
         switch ($callback_val->level) {
+            case 'back_to_desk':
+                $keyb = deskOption($telegram, $chat_id, $con);
+                $content = array(
+                    'chat_id' => $chat_id,
+                    'reply_markup' => $keyb,
+                    'text' => "درس خود را انتخاب نمایید",
+                    'message_id' => $callback_mid
+                );
+                $telegram->editMessageText($content);
+                break;
             case 'hello':
                 $value = $callback_val->value;
                 $stat = $callback_val->stat;
@@ -1710,6 +1720,14 @@ $name $family در این آزمون غایب بوده است
                             );
                             
                         }
+                        $out_param_back = array(
+                            'level' => "leson",
+                            'value' => "tval",
+                            'tvalue' => $leson_id
+                        );
+                        $option[]  = array(
+                            $telegram->buildInlineKeyboardButton("🔙 بازگشت", "", json_encode($out_param_back), "")
+                        );
                         $keyb    = $telegram->buildInlineKeyBoard($option);
                         $content = array(
                             'chat_id' => $chat_id,
@@ -1861,6 +1879,14 @@ $name $family در این آزمون غایب بوده است
                         $option[]   = array(
                             $telegram->buildInlineKeyboardButton("🗑 حذف دانش آموزان 🗑", "", json_encode($out_param2), "")
                             );
+                        $out_param_back = array(
+                            'level' => "leson",
+                            'value' => "tval",
+                            'tvalue' => $leson_id
+                        );
+                        $option[]  = array(
+                            $telegram->buildInlineKeyboardButton("🔙 بازگشت", "", json_encode($out_param_back), "")
+                        );
                         $keyb       = $telegram->buildInlineKeyBoard($option);
                         $content    = array(
                             'chat_id' => $chat_id,
@@ -2754,28 +2780,7 @@ normal:
                                 );
                                 $telegram->deleteMessage($content);
                             } elseif ($text == "رفتن به میز کار") {
-                                $sql       = "SELECT * FROM `lesons_table` WHERE `parent`=$chat_id";
-                                $result    = mysqli_query($con, $sql);
-                                $out_param = array(
-                                    'level' => "leson",
-                                    'value' => 'new'
-                                );
-                                $option    = array(
-                                    array(
-                                        $telegram->buildInlineKeyboardButton("جدید", "", json_encode($out_param), "")
-                                    )
-                                );
-                                while ($row = $result->fetch_assoc()) {
-                                    $out_param = array(
-                                        'level' => "leson",
-                                        'value' => "tval",
-                                        'tvalue' => $row["id"]
-                                    );
-                                    $option[]  = array(
-                                        $telegram->buildInlineKeyboardButton("$row[name]", "", json_encode($out_param), "")
-                                    );
-                                }
-                                $keyb    = $telegram->buildInlineKeyBoard($option);
+                                $keyb    = deskOption($telegram, $chat_id, $con);
                                 $content = array(
                                     'chat_id' => $chat_id,
                                     'reply_markup' => $keyb,

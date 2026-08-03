@@ -125,7 +125,15 @@ function qzOption($telegram, $con, $chat_id, $qz_id, $leson_id)
                 'qz_id' => "$qz_id"
             );
             $option[]   = array(
-                $telegram->buildInlineKeyboardButton("🗑 حذف آزمون 🗑", "", json_encode($out_param), "")
+                $telegram->buildInlineKeyboardButton("حذف کامل آزمون 🗑", "", json_encode($out_param), "")
+            );
+            $out_param_back = array(
+                'level' => "lesonOp",
+                'value' => 'list_qz',
+                'leson_id' => $leson_id
+            );
+            $option[] = array(
+                $telegram->buildInlineKeyboardButton("🔙 بازگشت به لیست آزمون‌ها", "", json_encode($out_param_back), "")
             );
             $keyb       = $telegram->buildInlineKeyBoard($option);
             $sqll       = "SELECT * FROM `qz_list` WHERE `id`=$qz_id";
@@ -383,6 +391,12 @@ function lesonOption($telegram, $chat_id, $leson_id, $con)
     $option[]   = array(
         $telegram->buildInlineKeyboardButton("👨‍🎓 مدیریت دانش آموزان 👩‍🎓", "", json_encode($out_param1), "")
     );
+    $out_param_back = array(
+        'level' => 'back_to_desk'
+    );
+    $option[] = array(
+        $telegram->buildInlineKeyboardButton("🔙 بازگشت به لیست درس‌ها", "", json_encode($out_param_back), "")
+    );
     $keyb       = $telegram->buildInlineKeyBoard($option);
     $content    = array(
         'chat_id' => $chat_id,
@@ -627,4 +641,18 @@ function keybordOption($con, $telegram, $chat_id)
         }
     }
     return $option;
+}
+
+function deskOption($telegram, $chat_id, $con)
+{
+    $sql       = "SELECT * FROM `lesons_table` WHERE `parent`=$chat_id";
+    $result    = mysqli_query($con, $sql);
+    $out_param = array('level' => "leson", 'value' => 'new');
+    $option    = array(array($telegram->buildInlineKeyboardButton("? ???? ?", "", json_encode($out_param), "")));
+    while ($row = $result->fetch_assoc()) {
+        $out_param = array('level' => "leson", 'value' => "tval", 'tvalue' => $row["id"]);
+        $option[]  = array($telegram->buildInlineKeyboardButton("$row[name]", "", json_encode($out_param), ""));
+    }
+    $keyb    = $telegram->buildInlineKeyBoard($option);
+    return $keyb;
 }
