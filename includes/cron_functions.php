@@ -24,7 +24,7 @@ function check_error($telegram, $con, $bot_id,$boturl)
     $error_num = $res->result->pending_update_count;
     if ($error_num > 1) {
         $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "Last Error Time:
  " . jdate('a h:i:s y/n/d', $res->result->last_error_date) . "
 Message Pending: $error_num
@@ -38,7 +38,7 @@ Error:
         
        if ($error_num > 10) {
           $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "hh".json_encode($res->result)
         );
         $telegram->sendMessage($content);
@@ -51,7 +51,7 @@ Error:
     $ok = $res->ok;
     $resultm = $res->result;
     $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "delete result: $ok----$resultm
 Message description: " . $res->description
         );
@@ -68,7 +68,7 @@ Message description: " . $res->description
     $ok = $res->ok;
     $resultm = $res->result;
     $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "set direct result: $ok----$resultm
 Message description: " . $res->description
         );
@@ -86,7 +86,7 @@ Message description: " . $res->description
     $ok = $res->ok;
     $resultm = $res->result;
     $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "delete result: $ok----$resultm
 Message description: " . $res->description
         );
@@ -103,7 +103,7 @@ Message description: " . $res->description
     $ok = $res->ok;
     $resultm = $res->result;
     $content = array(
-            'chat_id' => "$config['ADMIN_CHAT_ID']",
+            'chat_id' => "`$config['ADMIN_CHAT_ID']",
             'text' => "set sub result: $ok----$resultm
 Message description: " . $res->description
         );
