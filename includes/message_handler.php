@@ -1,7 +1,4 @@
 <?php
-    $content = array('chat_id' => "$config['ADMIN_CHAT_ID']", 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
-    $telegram->forwardMessage($content);
-    */
     
         $convert = explode(' ', $text);
         if ($convert[0] == '/start' && $convert[1] != NULL) {
@@ -836,5 +833,3 @@ normal:
                 }
             }
         }
-    }
-}
