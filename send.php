@@ -1,6 +1,6 @@
 <?php
-include("Telegram.php");
-include_once("jdf.php");
+include("includes/libs/Telegram.php");
+include_once("includes/libs/jdf.php");
 date_default_timezone_set("asia/tehran");
 
 require_once 'includes/db.php';
