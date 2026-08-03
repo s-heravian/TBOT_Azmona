@@ -23,7 +23,7 @@
                                 'chat_id' => $chat_id,
                                 'text' => "به ربات آزمونا خوش آمدید
 پشتیبانی :
-@DR_S_Heravian"
+{`$config['SUPPORT_HANDLE']}"
                             );
                             $telegram->sendMessage($content);
                             
@@ -82,7 +82,7 @@
                     if ($req_chat_id == $chat_id) {
                         if ($role == 1) {
                             $content = array(
-                                'chat_id' => "`$config['ADMIN_CHAT_ID']",
+                                'chat_id' => "$config['ADMIN_CHAT_ID']",
                                 'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 درخواست فعال سازی معلم کرده است
@@ -200,7 +200,7 @@ startteacher:
                 $sql     = "INSERT INTO `db_user` (`chat_id`, `name`, `family`, `role`, `lesons`, `active`, `pleson`, `state`, `user_id`, `f_tel`, `l_tele`, `last_act`) VALUES ('$chat_id', '', '', 1, '',0,'','','$username','','','$date')";
                 $result  = mysqli_query($con, $sql);
                 $content = array(
-                    'chat_id' => "`$config['ADMIN_CHAT_ID']",
+                    'chat_id' => "$config['ADMIN_CHAT_ID']",
                     'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 درخواست فعال سازی معلم کرده است
@@ -343,7 +343,7 @@ startteacher:
                             }
                         }
                         $content = array(
-                            'chat_id' => `$config['ADMIN_CHAT_ID'],
+                            'chat_id' => $config['ADMIN_CHAT_ID'],
                             'text' => $text,
                             'reply_markup' => $keyb
                         );
@@ -760,7 +760,7 @@ normal:
                                 );
                                 $telegram->sendMessage($content);
                                 $content = array(
-                                    'chat_id' => "`$config['ADMIN_CHAT_ID']",
+                                    'chat_id' => "$config['ADMIN_CHAT_ID']",
                                     'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 برای اولین بار با کد فعال سازی فعال شد
@@ -777,7 +777,7 @@ normal:
                                 );
                                 $telegram->sendMessage($content);
                                 $content = array(
-                                    'chat_id' => "`$config['ADMIN_CHAT_ID']",
+                                    'chat_id' => "$config['ADMIN_CHAT_ID']",
                                     'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 مجدد بعنوان معلم فعال شد
