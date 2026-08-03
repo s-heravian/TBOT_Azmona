@@ -2318,11 +2318,16 @@ startteacher:
                         );
                         $telegram->sendMessage($content);
                     } else {
-                        if ($row["role"] == 1 && $row["active"] == 1) {
-                            $text = "رفتن به میز کار";
-                        } elseif ($row["role"] == 2) {
-                            $text = "لیست درس ها";
-                        }
+                        $option = keybordOption($con, $telegram, $chat_id);
+                        $keyb   = $telegram->buildKeyBoard($option, true);
+                        
+                        $content = array(
+                            'chat_id' => $chat_id,
+                            'reply_markup' => $keyb,
+                            'text' => "به ربات آزمونا خوش آمدید. لطفاً یکی از گزینه‌های منو را انتخاب کنید:"
+                        );
+                        $telegram->sendMessage($content);
+                        $text = "";
                     }
                 }
 
