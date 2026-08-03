@@ -2308,6 +2308,24 @@ startteacher:
             } else {
                 $sql    = "UPDATE `db_user` SET `user_id`='$username',`f_tel`='$tel_name',`l_tele`='$tel_family' WHERE `chat_id`=$chat_id";
                 $result = mysqli_query($con, $sql);
+                
+                if ($text == '/start') {
+                    if ($row["name"] == '' || $row["family"] == '') {
+                        $text = "";
+                        $content = array(
+                            'chat_id' => $chat_id,
+                            'text' => ($row["name"] == '') ? "نام خود را وارد نمایید" : "نام خانوادگی خود را وارد نمایید"
+                        );
+                        $telegram->sendMessage($content);
+                    } else {
+                        if ($row["role"] == 1 && $row["active"] == 1) {
+                            $text = "رفتن به میز کار";
+                        } elseif ($row["role"] == 2) {
+                            $text = "لیست درس ها";
+                        }
+                    }
+                }
+
                 switch ($text) {
                     case 'ویرایش مشخصات فردی':
                         $sql    = "SELECT * FROM `db_user` WHERE `chat_id`=$chat_id";
