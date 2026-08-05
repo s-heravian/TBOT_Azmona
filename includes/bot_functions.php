@@ -150,7 +150,7 @@ function qzOption($telegram, $con, $chat_id, $qz_id, $leson_id)
                 'text' => "آزمون $qz_name در درس $leson_name"
             );
             $ressend=$telegram->sendMessage($content);
-            $ms_id=$ressend[result][message_id];
+            $ms_id=$ressend['message_id'] ?? null;
             $sql="UPDATE `qz_timer` SET `ms_id`= '$ms_id' WHERE `qz_id`='$qz_id' AND `state`='2' AND `end` IS NULL";
             $resul    = mysqli_query($con, $sql);
         } else {

@@ -69,6 +69,9 @@ class TelegramAdapter
     {
         $chat_id = $content['chat_id'];
         $document = $content['document']; // path
+        if ($document instanceof \CURLFile) {
+            $document = $document->name;
+        }
         $caption = $content['caption'] ?? '';
         
         $file = fopen($document, 'r+');
