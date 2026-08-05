@@ -7,9 +7,13 @@ require_once __DIR__ . '/includes/TelegramAdapter.php';
 date_default_timezone_set("asia/tehran");
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\Configuration;
 use SergiX44\Nutgram\RunningMode\Webhook;
 
-$bot = new Nutgram($config["BOT_TOKEN"]);
+$nutgram_config = new Configuration(
+    clientOptions: ['version' => 1.1]
+);
+$bot = new Nutgram($config["BOT_TOKEN"], $nutgram_config);
 $bot->setRunningMode(Webhook::class);
 
 // Global Middleware to track users
