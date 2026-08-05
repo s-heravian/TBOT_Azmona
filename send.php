@@ -9,8 +9,10 @@ include_once __DIR__ . '/includes/libs/jdf.php';
 date_default_timezone_set("asia/tehran");
 
 use SergiX44\Nutgram\Nutgram;
+use SergiX44\Nutgram\RunningMode\Webhook;
 
 $bot = new Nutgram($config["BOT_TOKEN"]);
+$bot->setRunningMode(Webhook::class);
 $telegram = new TelegramAdapter($bot);
 
 $bot_id       = $config["BOT_TOKEN"];
