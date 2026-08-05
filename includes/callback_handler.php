@@ -608,8 +608,8 @@ $row[name] $row[family] عزیز ؛
                                 $sqlt    = "SELECT * FROM `qz_time` WHERE `chat_id`=$send_id AND `qz_id`=$qz_id";
                                 $resultt = mysqli_query($con, $sqlt);
                                 $rowt    = mysqli_fetch_array($resultt);
-                                $start   = $rowt["start"];
-                                $end     = $rowt["end"];
+                                $start   = is_array($rowt) ? ($rowt["start"] ?? 0) : 0;
+                                $end     = is_array($rowt) ? ($rowt["end"] ?? 0) : 0;
                                 $sec     = $end - $start;
                                 $min     = jdate('H:i:s',($sec)-12600);
                                 $sqlc    = "SELECT `num_qu` FROM `qu_stat` WHERE `leson_id`=$leson_id AND `qz_id`=$qz_id";
