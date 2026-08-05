@@ -7,8 +7,8 @@ function check_corn_table($telegram, $con, $date)
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_array($result)) {
         $content = array(
-            'chat_id' => $row[chat_id],
-            'text' => $row[text]
+            'chat_id' => $row['chat_id'],
+            'text' => $row['text']
         );
         $telegram->sendMessage($content);
     }
@@ -125,10 +125,10 @@ function teacher_qz_timer($telegram, $con, $date)
     $sql    = "SELECT * FROM `qz_timer` WHERE `state`='2' AND `end` IS NULL";
     $result = mysqli_query($con, $sql);
     while ($row = mysqli_fetch_array($result)) {
-        $start       = $row[start];
-        $chat_id     = $row[chat_id];
-        $ms_id       = $row[ms_id];
-        $qz_id       = $row[qz_id];
+        $start       = $row['start'];
+        $chat_id     = $row['chat_id'];
+        $ms_id       = $row['ms_id'];
+        $qz_id       = $row['qz_id'];
         $option      = array();
         $out_param   = array(
             'level' => "qu_check",
@@ -167,13 +167,13 @@ function teacher_qz_timer($telegram, $con, $date)
         $sql         = "SELECT start FROM `qz_time` WHERE `qz_id`='$qz_id' AND `start`> '$start' ORDER BY qz_time.start DESC";
         $resultst    = mysqli_query($con, $sql);
         if ($rowst = mysqli_fetch_array($resultst)) {
-            $timetolastst = jdate('H:i:s', ($date - ($rowst[start])) - 12600);
+            $timetolastst = jdate('H:i:s', ($date - ($rowst['start'])) - 12600);
         } else
             $timetolastst = jdate('H:i:s', (0) - 12600);
         $sql      = "SELECT name FROM `qz_list` WHERE `id`='$qz_id'";
         $resultst = mysqli_query($con, $sql);
         $rowst    = mysqli_fetch_array($resultst);
-        $qz_name  = $rowst[name];
+        $qz_name  = $rowst['name'];
         $content  = array(
             'chat_id' => "$chat_id",
             'reply_markup' => $keyb,
