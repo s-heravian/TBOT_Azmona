@@ -8,8 +8,8 @@ cron();
 
 function cron(){
     
-include '../../send.php';
-include_once("../libs/jdf.php");
+include __DIR__ . '/../../send.php';
+include_once __DIR__ . '/../libs/jdf.php';
 
 //mysqli_set_charset($con, "utf8mb4");
 teacher_qz_timer($telegram,$con,time());

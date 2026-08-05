@@ -1,8 +1,8 @@
 <?php
-include '../../send.php';
-include_once("../libs/jdf.php");
+include __DIR__ . '/../../send.php';
+include_once __DIR__ . '/../libs/jdf.php';
 
-require_once '../db.php';
+require_once __DIR__ . '/../db.php';
 hello_teacher($telegram,$con,time(),$boturl);
 /*
 $content   = array(

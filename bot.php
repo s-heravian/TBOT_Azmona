@@ -1,7 +1,7 @@
 <?php
-include("includes/libs/Telegram.php");
-include_once("includes/libs/jdf.php");
-require_once 'includes/db.php';
+include(__DIR__ . "/includes/libs/Telegram.php");
+include_once(__DIR__ . "/includes/libs/jdf.php");
+require_once __DIR__ . '/includes/db.php';
 //echo("test");
 date_default_timezone_set("asia/tehran");
 $bot_id       = $config["BOT_TOKEN"];
@@ -9,7 +9,7 @@ $bot_username = $config["BOT_USERNAME"];
 $boturl       = $config["BOT_URL"];
 $payurl       = $config["PAY_URL"];
 
-require_once 'includes/bot_functions.php';
+require_once __DIR__ . '/includes/bot_functions.php';
 
 $telegram     = new Telegram($bot_id);
 $username         = $telegram->Username();
@@ -138,9 +138,9 @@ if(!is_null($fromid)){
 }
 else{
 if ($msgType == 'callback_query') {
-    require_once 'includes/callback_handler.php';
+    require_once __DIR__ . '/includes/callback_handler.php';
 } elseif ($msgType == 'message') {
-    require_once 'includes/message_handler.php';
+    require_once __DIR__ . '/includes/message_handler.php';
 }
 
 } 

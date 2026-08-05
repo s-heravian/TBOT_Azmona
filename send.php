@@ -1,10 +1,10 @@
 <?php
-include("includes/libs/Telegram.php");
-include_once("includes/libs/jdf.php");
+include(__DIR__ . "/includes/libs/Telegram.php");
+include_once(__DIR__ . "/includes/libs/jdf.php");
 date_default_timezone_set("asia/tehran");
 
-require_once 'includes/db.php';
-require_once 'includes/cron_functions.php';
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/cron_functions.php';
 $bot_id       = $config["BOT_TOKEN"];
 $bot_username = $config["BOT_USERNAME"];
 $boturl       = $config["BOT_URL"];

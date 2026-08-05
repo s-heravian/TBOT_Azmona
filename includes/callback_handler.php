@@ -515,7 +515,7 @@ $row[name] $row[family] عزیز ؛
                         
                         break;
                     case 'sec_list':
-                        require_once('tcpdf-master/tcpdf.php');
+                        require_once __DIR__ . '/../tcpdf-master/tcpdf.php';
                         
                         // create new PDF document
                         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
