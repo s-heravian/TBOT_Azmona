@@ -1,148 +1,95 @@
 <?php
-include(__DIR__ . "/includes/libs/Telegram.php");
-include_once(__DIR__ . "/includes/libs/jdf.php");
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/db.php';
-//echo("test");
-date_default_timezone_set("asia/tehran");
-$bot_id       = $config["BOT_TOKEN"];
-$bot_username = $config["BOT_USERNAME"];
-$boturl       = $config["BOT_URL"];
-$payurl       = $config["PAY_URL"];
-
 require_once __DIR__ . '/includes/bot_functions.php';
+require_once __DIR__ . '/includes/TelegramAdapter.php';
 
-$telegram     = new Telegram($bot_id);
-$username         = $telegram->Username();
-$text             = $telegram->Text();
-$data             = $telegram->getData();
-$tel_name         = $telegram->FirstName();
-$tel_family       = $telegram->LastName();
-$message_id       = $telegram->MessageID();
-$user_id          = $telegram->UserID();
-$chat_id          = $telegram->ChatID();
-$callback_data    = $telegram->Callback_Data();
-$callback_query   = $telegram->Callback_Query();
-$callback_chat_id = $telegram->Callback_ChatID();
-$msgType          = $telegram->getUpdateType();
-$fromid          = $telegram->FromID();
-$date             = time();
+date_default_timezone_set("asia/tehran");
 
-/////  debuging
-/*
-$content = array(
-    'chat_id' => $config['ADMIN_CHAT_ID'],
-    'text' => json_encode ( $data)
-    );
-    $telegram->sendMessage($content);
- 
-//echo json_encode ( $callback_query);
+use SergiX44\Nutgram\Nutgram;
 
-*/
+$bot = new Nutgram($config["BOT_TOKEN"]);
 
+// Global Middleware to track users
+$bot->middleware(function (Nutgram $bot, $next) use ($con) {
+    $user = $bot->user();
+    $chat = $bot->chat();
 
-if (!is_null($chat_id)) {
-    $sql="UPDATE `db_user` SET `user_id`='$username',`f_tel`='$tel_name' ,`l_tele`='$tel_family',`last_act`='$date' WHERE `chat_id`='$chat_id';";
-    $result  = mysqli_query($con, $sql);
-    ///////////////////////////////////////////////////// debuge///////////////////////////////////////////////////////
-/*   
-    $content = array(
-    'chat_id' => $config['ADMIN_CHAT_ID'],
-    'text' => "$msgType + $chat_id ^^^^^^"
-    );
-    $telegram->sendMessage($content);
-    
-    /*    
-    $option = array();
-    for($i=0;$i<=100;$i++){
-    //First row
-    $option[]=array( $telegram->buildInlineKeyboardButton("$i", "", json_encode(out_param), ""));
-    
-    }
-    $keyb    = $telegram->buildInlineKeyBoard($option);
-    $content = array(
-    'chat_id' => $config['ADMIN_CHAT_ID'],
-    'reply_markup' => $keyb,
-    'text' => "تست تعداد دکمه"
-    );
-    $telegram->sendMessage($content);
-    
-    /*if ($callback_query !== null && $callback_query != "") {
-    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' =>json_encode($callback_query) );
-    $telegram->sendMessage($content);
-    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' =>$callback_data );
-    $telegram->sendMessage($content);
-    }else{
-    
-    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
-    $telegram->forwardMessage($content); 
-    
+    if ($user && $chat) {
+        $chat_id = $chat->id;
+        $username = $user->username ?? '';
+        $tel_name = $user->first_name ?? '';
+        $tel_family = $user->last_name ?? '';
+        $date = time();
+
+        $sql = "UPDATE `db_user` SET `user_id`='$username',`f_tel`='$tel_name' ,`l_tele`='$tel_family',`last_act`='$date' WHERE `chat_id`='$chat_id';";
+        mysqli_query($con, $sql);
     }
     
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    $next($bot);
+});
+
+// Legacy Handlers Wrapper
+$bot->onMessage(function (Nutgram $bot) use ($con, $config) {
+    // Setup legacy variables
+    $telegram = new TelegramAdapter($bot);
     
-     $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
-    $telegram->forwardMessage($content); 
-    */
-//}
-/*
+    $message = $bot->message();
+    $chat = $bot->chat();
+    $user = $bot->user();
+    
+    $chat_id = $chat->id;
+    $text = $message->text ?? '';
+    $username = $user->username ?? '';
+    $tel_name = $user->first_name ?? '';
+    $tel_family = $user->last_name ?? '';
+    $message_id = $message->message_id;
+    $fromid = $message->forward_from ? $message->forward_from->id : null;
+    $bot_username = $config["BOT_USERNAME"];
+    
+    // Legacy pre-checks (forwarded message check)
+    if (!is_null($fromid)) {
+        $sql="SELECT * FROM `db_user` WHERE `chat_id`=$chat_id AND `active`=1";  
+        $result = mysqli_query($con, $sql);
+        $row = mysqli_fetch_array($result);
+        if (!is_null($row[0])) {
+            $sql="SELECT * FROM `db_user` WHERE `chat_id`=$fromid AND `active`=0";  
+            $result = mysqli_query($con, $sql);
+            $row = mysqli_fetch_array($result);
+            if (!is_null($row[0])) {
+                $bot->sendMessage("{$row[1]} {$row[2]}\n@{$row['user_id']}", ['chat_id' => $chat_id]);
+            } else {
+                $bot->sendMessage("کاربر تا کنون ثبت نشده است", ['chat_id' => $chat_id]);
+            }
+        }
+        return; // Stop execution for forwarded messages
+    }
 
-$content = array('chat_id' => $chat_id, 'text' =>$sql);
-$telegram->sendMessage($content);
+    // Include legacy message handler
+    require __DIR__ . '/includes/message_handler.php';
+});
 
-$option = array( 
-//First row
-array($telegram->buildKeyboardButton("Button 1"), $telegram->buildKeyboardButton("Button 2")), 
-//Second row 
-array($telegram->buildKeyboardButton("Button 3"), $telegram->buildKeyboardButton("Button 4"), $telegram->buildKeyboardButton("Button 5")), 
-//Third row
-array($telegram->buildKeyboardButton("Button 6")) );
-$keyb = $telegram->buildKeyBoard($option, $onetime=false);
-$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "This is a Keyboard Test");
-$telegram->sendMessage($content);
+$bot->onCallbackQuery(function (Nutgram $bot) use ($con, $config) {
+    // Setup legacy variables
+    $telegram = new TelegramAdapter($bot);
+    
+    $callback_query = $bot->callbackQuery();
+    $chat_id = $callback_query->message->chat->id ?? null;
+    $username = $callback_query->from->username ?? '';
+    $callback_data = $callback_query->data;
+    $callback_mid = $callback_query->message->message_id;
+    
+    // Include legacy callback handler
+    require __DIR__ . '/includes/callback_handler.php';
+    
+    $bot->answerCallbackQuery();
+});
 
-*/
-/*
 
-if (mysqli_connect_errno($con))
-{
-$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL: " . mysqli_connect_error());
-$telegram->sendMessage($content);
-}else{
-$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL:ok");
-$telegram->sendMessage($content);
-}
-*/
-if(!is_null($fromid)){
-  $sql="SELECT * FROM `db_user` WHERE `chat_id`=$chat_id AND `active`=1";  
-  $result  = mysqli_query($con, $sql);
-  $row     = mysqli_fetch_array($result);
-  if(!is_null($row[0])){
-        $sql="SELECT * FROM `db_user` WHERE `chat_id`=$fromid AND `active`=0";  
-        $result  = mysqli_query($con, $sql);
-        $row     = mysqli_fetch_array($result);
-        if(!is_null($row[0])){
-        $content = array(
-    'chat_id' => $chat_id,
-    'text' => "$row[1] $row[2]
-@$row[user_id]"
-    );
-    $telegram->sendMessage($content);
-        }else{
-           $content = array(
-    'chat_id' => $chat_id,
-    'text' => "کاربر تا کنون ثبت نشده است"
-    );
-    $telegram->sendMessage($content); 
-        }  
-  }
-}
-else{
-if ($msgType == 'callback_query') {
-    require_once __DIR__ . '/includes/callback_handler.php';
-} elseif ($msgType == 'message') {
-    require_once __DIR__ . '/includes/message_handler.php';
-}
+// Run Nutgram
+$bot->run();
 
-} 
-}
-mysqli_close($con);
+// Close DB connection gracefully
+$bot->onClose(function() use ($con) {
+    if ($con) mysqli_close($con);
+});

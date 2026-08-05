@@ -18,12 +18,31 @@ This version introduces major structural refactoring for better maintainability,
 - **Environment Configuration**: Configurable using `.env` (no sensitive data exposed in code).
 - **Cron Jobs Integration**: Regular updates and reminders using `cron10.php` and `cronh.php`.
 
-### Installation & Setup
-1. Clone the repository:
+### Prerequisites
+- **PHP 8.1 or higher (PHP 8.4 Recommended)**
+- **Composer** (PHP Package Manager)
+- Web Server with SSL (Apache/Nginx/aaPanel)
+- MySQL Database
+
+## Deployment & Installation
+
+1. **Clone the repository:**
    ```bash
-   git clone https://github.com/s-heravian/TBOT_Azmona.git
+   git clone <repository_url>
+   cd TBOT_Azmona
    ```
-2. Copy the `.env.example` file to `.env` and fill in your Bot Token, Database credentials, and Admin Chat ID:
+
+2. **Install Dependencies:**
+   Since this bot uses the Nutgram framework, you must install dependencies via Composer:
+   ```bash
+   composer install --no-dev
+   ```
+
+3. **Database Setup:**
+   Import `db.sql` into your MySQL database.
+
+4. **Configuration:**
+   Rename `.env.example` to `.env` and configure your credentials and Admin Chat ID:
    ```bash
    cp .env.example .env
    ```
