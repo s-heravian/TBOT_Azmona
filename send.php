@@ -29,4 +29,3 @@ check_corn_table($telegram, $con, $date);
 check_error($telegram, $con, $bot_id, $boturl);
 teacher_qz_timer($telegram, $con, $date);
 
-mysqli_close($con);
