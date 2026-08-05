@@ -654,7 +654,7 @@ $row[name] $row[family] عزیز ؛
                         
                         //Close and output PDF document
                         $file_name = 'output_' . mt_rand(1, 10000) . '.pdf';
-                        $pdf_path = realpath(__DIR__ . "/outtemp") . '/' . $file_name;
+                        $pdf_path = realpath(__DIR__ . "/../outtemp") . '/' . $file_name;
                         $pdf->Output($pdf_path, \Mpdf\Output\Destination::FILE);
                         
                         $content  = array(
@@ -663,7 +663,7 @@ $row[name] $row[family] عزیز ؛
                             'caption' => "نتیجه آزمون $qz_name"
                         );
                         $telegram->sendDocument($content);
-                        unlink("outtemp/$file_name");
+                        unlink(__DIR__ . "/../outtemp/$file_name");
                         break;
                     case 'popen':
                         $qz_id   = $callback_val->qz_id;
