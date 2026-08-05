@@ -282,7 +282,7 @@ $row[name] $row[family] عزیز ؛
                         $pleson   = json_encode(array(
                             'leson' => $leson_id
                         ));
-                        $sql      = "UPDATE `db_user` SET `pleson`=$pleson WHERE `chat_id`=$chat_id";
+                        $sql      = "UPDATE `db_user` SET `pleson`='$pleson' WHERE `chat_id`=$chat_id";
                         $result   = mysqli_query($con, $sql);
                         $content  = array(
                             'chat_id' => $chat_id,
