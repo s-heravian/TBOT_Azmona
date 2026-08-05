@@ -79,11 +79,13 @@ $bot->onCallbackQuery(function (Nutgram $bot) use ($con, $config) {
     // Setup legacy variables
     $telegram = new TelegramAdapter($bot);
     
-    $callback_query = $bot->callbackQuery();
-    $chat_id = $callback_query->message->chat->id ?? null;
-    $username = $callback_query->from->username ?? '';
-    $callback_data = $callback_query->data;
-    $callback_mid = $callback_query->message->message_id;
+    $callback_query_obj = $bot->callbackQuery();
+    $callback_query = json_decode(json_encode($callback_query_obj), true);
+    
+    $chat_id = $callback_query_obj->message->chat->id ?? null;
+    $username = $callback_query_obj->from->username ?? '';
+    $callback_data = $callback_query_obj->data;
+    $callback_mid = $callback_query_obj->message->message_id;
     
     // Include legacy callback handler
     require __DIR__ . '/includes/callback_handler.php';

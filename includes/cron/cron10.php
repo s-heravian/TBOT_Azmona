@@ -12,7 +12,6 @@ include __DIR__ . '/../../send.php';
 include_once __DIR__ . '/../libs/jdf.php';
 
 //mysqli_set_charset($con, "utf8mb4");
-teacher_qz_timer($telegram,$con,time());
 /*
 $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => jdate('i:s',time()));
 $telegram->sendMessage($content);
