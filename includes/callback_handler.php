@@ -515,15 +515,16 @@ $row[name] $row[family] عزیز ؛
                         
                         break;
                     case 'sec_list':
-                        // TCPDF is now loaded via Composer autoloader in bot.php
+                        // mPDF is loaded via Composer autoloader
                         
-                        // create new PDF document
-                        $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-                        
-                        // set font
-                        $pdf->SetFont('dejavusans', '', 12);
-                        // add a page
-                        $pdf->AddPage();
+                        // create new PDF document with mPDF
+                        $pdf = new \Mpdf\Mpdf([
+                            'mode' => 'utf-8',
+                            'format' => 'A4',
+                            'autoScriptToLang' => true,
+                            'autoLangToFont' => true,
+                        ]);
+                        $pdf->SetDirectionality('rtl');
                         
                         $qz_id       = $callback_val->qz_id;
                         $sql         = "SELECT * FROM `qz_list` WHERE `id`=$qz_id";
@@ -649,15 +650,12 @@ $row[name] $row[family] عزیز ؛
                         $htmlpersian = "$htmlpersian
 </tbody>
 </table>";
-                        $pdf->WriteHTML($htmlpersian, true, 0, true, 0);
-                        
-                        // set LTR direction for english translation
-                        $pdf->setRTL(true);
+                        $pdf->WriteHTML($htmlpersian);
                         
                         //Close and output PDF document
                         $file_name = 'output_' . mt_rand(1, 10000) . '.pdf';
                         $pdf_path = realpath(__DIR__ . "/outtemp") . '/' . $file_name;
-                        $pdf->Output($pdf_path, 'F');
+                        $pdf->Output($pdf_path, \Mpdf\Output\Destination::FILE);
                         
                         $content  = array(
                             'chat_id' => $chat_id,
