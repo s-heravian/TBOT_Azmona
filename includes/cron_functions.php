@@ -15,7 +15,7 @@ function check_corn_table($telegram, $con, $date)
 }
 function check_error($telegram, $con, $bot_id,$boturl)
 {
-    
+    global $config;
     $ch = curl_init("https://api.telegram.org/bot$bot_id/getWebhookInfo");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -24,7 +24,7 @@ function check_error($telegram, $con, $bot_id,$boturl)
     $error_num = $res->result->pending_update_count;
     if ($error_num > 1) {
         $content = array(
-            'chat_id' => `$config['ADMIN_CHAT_ID'],
+            'chat_id' => $config['ADMIN_CHAT_ID'],
             'text' => "Last Error Time:
  " . jdate('a h:i:s y/n/d', $res->result->last_error_date) . "
 Message Pending: $error_num
