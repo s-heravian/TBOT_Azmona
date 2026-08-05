@@ -29,7 +29,7 @@ class TelegramAdapter
             $opt['reply_to_message_id'] = $content['message_id'];
         }
         
-        return $this->bot->sendMessage($text, array_merge(['chat_id' => $chat_id], $opt));
+        return $this->bot->sendMessage($text, ...array_merge(['chat_id' => $chat_id], $opt));
     }
 
     public function editMessageText(array $content)
@@ -42,7 +42,7 @@ class TelegramAdapter
             $opt['reply_markup'] = $content['reply_markup'];
         }
 
-        return $this->bot->editMessageText($text, array_merge(['chat_id' => $chat_id, 'message_id' => $message_id], $opt));
+        return $this->bot->editMessageText($text, ...array_merge(['chat_id' => $chat_id, 'message_id' => $message_id], $opt));
     }
 
     public function editMessageReplyMarkup(array $content)
@@ -54,7 +54,7 @@ class TelegramAdapter
             $opt['reply_markup'] = $content['reply_markup'];
         }
 
-        return $this->bot->editMessageReplyMarkup(array_merge(['chat_id' => $chat_id, 'message_id' => $message_id], $opt));
+        return $this->bot->editMessageReplyMarkup(...array_merge(['chat_id' => $chat_id, 'message_id' => $message_id], $opt));
     }
 
     public function deleteMessage(array $content)
@@ -77,7 +77,7 @@ class TelegramAdapter
             $opt['caption'] = $caption;
         }
 
-        return $this->bot->sendDocument(InputFile::make($file), $opt);
+        return $this->bot->sendDocument(InputFile::make($file), ...$opt);
     }
     
     public function sendPhoto(array $content)
@@ -93,7 +93,7 @@ class TelegramAdapter
             $opt['reply_markup'] = $content['reply_markup'];
         }
 
-        return $this->bot->sendPhoto($photo, $opt);
+        return $this->bot->sendPhoto($photo, ...$opt);
     }
 
     public function forwardMessage(array $content)
