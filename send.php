@@ -32,10 +32,10 @@ teacher_qz_timer($telegram, $con, $date);
 /*
 if (mysqli_connect_errno($con))
 {
-$content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL: " . mysqli_connect_error());
+$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL: " . mysqli_connect_error());
 $telegram->sendMessage($content);
 }else{
-$content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL:ok");
+$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL:ok");
 $telegram->sendMessage($content);
 }
 
@@ -52,13 +52,13 @@ $telegram->buildInlineKeyboardButton("پایان ggآزمون", "", json_encode(
 );
 $keyb      = $telegram->buildInlineKeyBoard($option);
 $content   = array(
-'chat_id' => `$config['ADMIN_CHAT_ID'],
+'chat_id' => $config['ADMIN_CHAT_ID'],
 'reply_markup' => $keyb,'text' => "Failed to connect to MySQL:ok");
 $resu=$telegram->sendMessage($content);
 echo $resu[result][message_id];
 echo json_encode($resu);
 echo $keyb;
-$content = array('chat_id' => `$config['ADMIN_CHAT_ID'],'reply_markup' => $keyb, 'text' => "message_id",'message_id'=>$resu[result][message_id]);
+$content = array('chat_id' => $config['ADMIN_CHAT_ID'],'reply_markup' => $keyb, 'text' => "message_id",'message_id'=>$resu[result][message_id]);
 $resu=$telegram->editMessageText($content);
 */
 

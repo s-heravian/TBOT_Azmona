@@ -254,7 +254,7 @@ function userEnterCheck($telegram, $con, $chat_id, $leson_id, $role, $username)
         $result = mysqli_query($con, $sql);
         if ($role == 1) {
             $content = array(
-                'chat_id' => `$config['ADMIN_CHAT_ID'],
+                'chat_id' => $config['ADMIN_CHAT_ID'],
                 'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 درخواست فعال سازی معلم کرده است
@@ -274,7 +274,7 @@ function userEnterCheck($telegram, $con, $chat_id, $leson_id, $role, $username)
         }
         if ($role == 1) {
             $content = array(
-                'chat_id' => `$config['ADMIN_CHAT_ID'],
+                'chat_id' => $config['ADMIN_CHAT_ID'],
                 'text' => "کاربری :$chat_id
 با نام : $tel_name  $tel_family
 لینک فعال سازی معلم را باز کرده است

@@ -30,7 +30,7 @@ $date             = time();
 /////  debuging
 /*
 $content = array(
-    'chat_id' => `$config['ADMIN_CHAT_ID'],
+    'chat_id' => $config['ADMIN_CHAT_ID'],
     'text' => json_encode ( $data)
     );
     $telegram->sendMessage($content);
@@ -46,7 +46,7 @@ if (!is_null($chat_id)) {
     ///////////////////////////////////////////////////// debuge///////////////////////////////////////////////////////
 /*   
     $content = array(
-    'chat_id' => `$config['ADMIN_CHAT_ID'],
+    'chat_id' => $config['ADMIN_CHAT_ID'],
     'text' => "$msgType + $chat_id ^^^^^^"
     );
     $telegram->sendMessage($content);
@@ -60,27 +60,27 @@ if (!is_null($chat_id)) {
     }
     $keyb    = $telegram->buildInlineKeyBoard($option);
     $content = array(
-    'chat_id' => `$config['ADMIN_CHAT_ID'],
+    'chat_id' => $config['ADMIN_CHAT_ID'],
     'reply_markup' => $keyb,
     'text' => "تست تعداد دکمه"
     );
     $telegram->sendMessage($content);
     
     /*if ($callback_query !== null && $callback_query != "") {
-    $content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' =>json_encode($callback_query) );
+    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' =>json_encode($callback_query) );
     $telegram->sendMessage($content);
-    $content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' =>$callback_data );
+    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' =>$callback_data );
     $telegram->sendMessage($content);
     }else{
     
-    $content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
+    $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
     $telegram->forwardMessage($content); 
     
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-     $content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
+     $content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'from_chat_id'=>$chat_id, 'message_id'=>$message_id);
     $telegram->forwardMessage($content); 
     */
 //}
@@ -105,10 +105,10 @@ $telegram->sendMessage($content);
 
 if (mysqli_connect_errno($con))
 {
-$content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL: " . mysqli_connect_error());
+$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL: " . mysqli_connect_error());
 $telegram->sendMessage($content);
 }else{
-$content = array('chat_id' => `$config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL:ok");
+$content = array('chat_id' => $config['ADMIN_CHAT_ID'], 'text' => "Failed to connect to MySQL:ok");
 $telegram->sendMessage($content);
 }
 */
