@@ -4,8 +4,11 @@
 
 Azmona is a Telegram Bot built with PHP that helps teachers manage and conduct online quizzes and exams seamlessly within Telegram. It includes features for tracking students' time, submitting answers, and generating automated PDF results.
 
-## 🚀 Version 2.3.0 (Latest)
-This version finalizes the modernization of the Azmona bot:
+## 🚀 Version 2.3.1 (Security Patch - Latest)
+- **PHP 8.4.27 Security Upgrade**: Raised minimum runtime requirement to PHP 8.4.27 in `composer.json` to mitigate critical remote code execution vulnerabilities (PHP2Shell: CVE-2026-109618 and CVE-2026-109619).
+- **Hardened Deployment**: Verified dependency chain and runtime stability on PHP 8.4.27+.
+
+## 📦 Version 2.3.0
 - **Nutgram Framework Migration**: Completely migrated from a custom legacy Telegram API handler to the modern, robust Nutgram framework, supporting named arguments and PHP 8.x flawlessly.
 - **mPDF Integration**: Replaced the legacy, 32MB hardcoded `tcpdf-master` library with `mPDF` via Composer. This sets the foundation for modern HTML/CSS report cards with excellent RTL/Persian support.
 - **PHP 8.4 Compatibility**: Fixed all warnings, undefined constants, and deprecated syntax issues (like naked array keys and `mysqli_close` conflicts) to ensure 100% stability on PHP 8.4.
@@ -19,7 +22,7 @@ This version finalizes the modernization of the Azmona bot:
 - **Cron Jobs Integration**: Regular updates and reminders using `cron10.php` and `cronh.php`.
 
 ### Prerequisites
-- **PHP 8.1 or higher (PHP 8.4 Recommended)**
+- **PHP 8.4.27 or higher** (Required security patch against CVE-2026-109618 & CVE-2026-109619)
 - **Composer** (PHP Package Manager)
 - Web Server with SSL (Apache/Nginx/aaPanel)
 - MySQL Database
